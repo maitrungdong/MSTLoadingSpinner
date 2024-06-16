@@ -1,0 +1,127 @@
+$DEFAULT_BASE_RING_COLOR: #3d3e78;
+$DEFAULT_RING_COLOR: #7f85f5;
+$WHITE_COLOR: white;
+
+.mst-loading-spinner {
+	$block: &;
+
+	box-sizing: border-box;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	overflow: hidden;
+
+	#{$block}__base-ring {
+		$DEFAULT_SIZE: 32px;
+		$DEFAULT_STROKE_WIDTH: 3px;
+		$DEFAULT_ANIMATION_DURATION: 1.5s;
+
+		position: relative;
+		box-sizing: border-box;
+		flex-shrink: 0;
+
+		width: #{$DEFAULT_SIZE};
+		height: #{$DEFAULT_SIZE};
+
+		-webkit-mask-image: radial-gradient(closest-side, transparent calc(100% - #{$DEFAULT_STROKE_WIDTH} - 1px), #{$WHITE_COLOR} calc(100% - #{$DEFAULT_STROKE_WIDTH}) calc(100% - 1px), transparent 100%);
+		mask-image: radial-gradient(closest-side, transparent calc(100% - #{$DEFAULT_STROKE_WIDTH} - 1px), #{$WHITE_COLOR} calc(100% - #{$DEFAULT_STROKE_WIDTH}) calc(100% - 1px), transparent 100%);
+
+		background-color: #{$DEFAULT_BASE_RING_COLOR};
+		color: #{$DEFAULT_RING_COLOR};
+
+		animation-duration: #{$DEFAULT_ANIMATION_DURATION};
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-name: msRotateKeyframes;
+
+		@keyframes msRotateKeyframes {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+	}
+
+	#{$block}__ring {
+		position: absolute;
+		box-sizing: border-box;
+
+		width: 100%;
+		height: 100%;
+
+		-webkit-mask-image: conic-gradient(transparent 105deg, #{$WHITE_COLOR} 105deg);
+		mask-image: conic-gradient(transparent 105deg, #{$WHITE_COLOR} 105deg);
+
+		animation-duration: inherit;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.33,0,0.67,1);
+		animation-name: msRingAnimKeyframes;
+
+		@keyframes msRingAnimKeyframes {
+			0% {
+				transform: rotate(-135deg);
+			}
+
+			50% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(225deg);
+			}
+		}
+
+		&::before {
+			animation-name: beforeAnimKeyframes !important;
+
+			@keyframes beforeAnimKeyframes {
+				0% {
+					transform: rotate(0deg);
+				}
+
+				50% {
+					transform: rotate(105deg);
+				}
+
+				100% {
+					transform: rotate(0deg);
+				}
+			}
+		}
+
+		&::after {
+			animation-name: afterAnimKeyframes !important;
+
+			@keyframes afterAnimKeyframes {
+				0% {
+					transform: rotate(0deg);
+				}
+
+				50% {
+					transform: rotate(225deg);
+				}
+
+				100% {
+					transform: rotate(0deg);
+				}
+			}
+		}
+
+		&::before,
+		&::after {
+			content: '';
+			box-sizing: border-box;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			animation: inherit;
+
+			background-image: conic-gradient(currentcolor 135deg, transparent 135deg);
+		}
+	}
+}
